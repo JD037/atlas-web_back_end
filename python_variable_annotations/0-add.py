@@ -1,10 +1,19 @@
 #!/usr/bin/env python3
-""" Task0. Basic annotations - add. """
+
+"""
+This module provides a function to add two floating-point numbers.
+"""
 
 
 def add(a: float, b: float) -> float:
-    """type-annotated function add that takes a float a and a float b
-    as arguments and returns their sum as a float.
     """
+    Add two floating-point numbers and return the result.
 
-    return (a + b)
+    Parameters:
+    a (float): The first number to add.
+    b (float): The second number to add.
+
+    Returns:
+    float: The sum of a and b.
+    """
+    return a + b
