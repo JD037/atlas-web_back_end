@@ -7,10 +7,12 @@ four times in parallel using asyncio.gather.
 measure_runtime should measure the total runtime and return it.
 """
 
+
 import asyncio
 import time
 
 async_comprehensions = __import__('1-async_comprehension').async_comprehension
+
 
 async def measure_runtime() -> float:
     """Measure the runtime of async_generator"""
