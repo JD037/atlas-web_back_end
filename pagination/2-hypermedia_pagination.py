@@ -38,6 +38,7 @@ class Server:
         """Return the appropriate page of the dataset."""
         assert isinstance(page, int) and isinstance(page_size, int)
         assert page > 0 and page_size > 0
+        self.dataset()  # Ensure dataset is loaded
         start_index, end_index = index_range(page, page_size)
         if start_index >= len(self.__dataset):
             return []
