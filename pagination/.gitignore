@@ -1,0 +1,4 @@
+hide pycache file
+
+__pycache__/
+*.pyc
