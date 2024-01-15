@@ -61,7 +61,7 @@ class RedactingFormatter(logging.Formatter):
 
 
 # Define the PII_FIELDS constant
-PII_FIELDS: List[str] = ["name", "email", "phone", "ssn", "password"]
+PII_FIELDS: tuple = ("name", "email", "phone", "ssn", "password")
 
 
 def get_logger() -> logging.Logger:
