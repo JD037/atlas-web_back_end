@@ -5,6 +5,7 @@ Auth module for handling authentication.
 from flask import request
 from typing import List, TypeVar
 
+
 class Auth:
     """
     Auth class to manage the API authentication.
@@ -18,8 +19,11 @@ class Auth:
             return True
 
         # Ensure that all paths in excluded_paths end with '/'
-        normalized_excluded = [p[:-1] if p.endswith('/') else p for p in excluded_paths]
-        
+        normalized_excluded = [
+            p[:-1] if p.endswith('/') else p
+            for p in excluded_paths
+        ]
+
         # Normalize the input path in the same way
         normalized_path = path[:-1] if path.endswith('/') else path
 
@@ -29,7 +33,9 @@ class Auth:
         """
         Returns the Authorization header value from the request.
         """
-        return None
+        if request is None:
+            return None
+        return request.headers.get('Authorization', None)
 
     def current_user(self, request=None) -> TypeVar('User'):
         """
