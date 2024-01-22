@@ -22,7 +22,13 @@ auth = Auth()
 @app.before_request
 def before_each_request():
     """ Function to run before each request to check user authentication """
-    request.current_user = auth.current_user(request)
+    if not auth.authorization_header(request) and not auth.session_cookie(request):
+        # If the path requires authentication and none is provided, abort the request
+        if auth.require_auth(request.path, ['/api/v1/status/', '/api/v1/unauthorized/', '/api/v1/forbidden/']):
+            abort(401)
+    else:
+        request.current_user = auth.current_user(request)
+
 
 @app.errorhandler(404)
 def not_found(error) -> str:
