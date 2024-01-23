@@ -20,7 +20,7 @@ class SessionAuth(Auth):
         """
         Creates a session ID for a user_id and returns the session ID.
         """
-        if user_id is None or type(user_id) is not str:
+        if user_id is None or not isinstance(user_id, str):
             return None
 
         session_id = str(uuid.uuid4())
@@ -31,7 +31,7 @@ class SessionAuth(Auth):
         """
         Returns a User ID based on a Session ID.
         """
-        if session_id is None or type(session_id) is not str:
+        if session_id is None or not isinstance(session_id, str):
             return None
         return self.user_id_by_session_id.get(session_id)
 
@@ -46,21 +46,24 @@ class SessionAuth(Auth):
         Deletes the user session / logs out.
 
         Args:
-            request: The Flask request object from which the session ID will be retrieved.
+            request: The Flask request object from which the
+            session ID will be retrieved.
 
         Returns:
             - True: If the session was successfully destroyed.
-            - False: If the request is None, the session ID is not found in the request,
+            - False: If the request is None, the session ID is not found
+                in the request,
                     or the session ID is not linked to any User ID.
 
-        This method removes the session ID from the user_id_by_session_id dictionary, effectively
-        ending the user's session.
+        This method removes the session ID from the user_id_by_session_id
+        dictionary, effectively ending the user's session.
         """
         if request is None:
             return False
 
         session_id = self.session_cookie(request)
-        if session_id is None or self.user_id_for_session_id(session_id) is None:
+        if session_id is None or self.user_id_for_session_id(
+                session_id) is None:
             return False
 
         del self.user_id_by_session_id[session_id]

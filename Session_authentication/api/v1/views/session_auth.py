@@ -43,7 +43,9 @@ def login():
     return response
 
 
-@app_views.route('/auth_session/logout', methods=['DELETE'], strict_slashes=False)
+@app_views.route('/auth_session/logout',
+                 methods=['DELETE'],
+                 strict_slashes=False)
 def logout():
     """
     DELETE /api/v1/auth_session/logout
@@ -51,7 +53,8 @@ def logout():
         Logs out a user by destroying their session.
         If the session ID is not found or invalid, returns a 404 error.
     Returns:
-        - Empty JSON dictionary with the status code 200 if the session was successfully destroyed.
+        - Empty JSON dictionary with the status code 200 if the session
+            was successfully destroyed.
         - 404 error if the session ID does not exist or is invalid.
     """
     if auth.destroy_session(request):
