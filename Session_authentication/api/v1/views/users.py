@@ -4,6 +4,8 @@
 from api.v1.views import app_views
 from flask import abort, jsonify, request
 from models.user import User
+from api.v1.auth.auth import Auth
+from api.v1.auth.basic_auth import BasicAuth
 
 
 @app_views.route('/users', methods=['GET'], strict_slashes=False)
@@ -120,3 +122,19 @@ def update_user(user_id: str = None) -> str:
         user.last_name = rj.get('last_name')
     user.save()
     return jsonify(user.to_json()), 200
+
+
+@app_views.route('/users/me', methods=['GET'], strict_slashes=False)
+def get_current_user() -> str:
+    """ GET /api/v1/users/me
+    Return:
+      - User object JSON represented for the currently authenticated user
+      - 404 if the current user is not found (authentication issue)
+    """
+    # Implement authentication logic to identify the current user
+    current_user = Auth.current_user(request)
+    if current_user is None:
+        abort(404)  # User not found, return 404
+
+    # Return JSON representation of the current user
+    return jsonify(current_user.to_json())
