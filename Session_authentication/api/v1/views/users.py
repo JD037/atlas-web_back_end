@@ -131,10 +131,10 @@ def get_current_user() -> str:
       - User object JSON represented for the currently authenticated user
       - 404 if the current user is not found (authentication issue)
     """
-    # Implement authentication logic to identify the current user
-    current_user = Auth.current_user(request)
+    from app import auth  # Import the auth instance from app.py
+
+    current_user = auth.current_user(request)
     if current_user is None:
         abort(404)  # User not found, return 404
 
-    # Return JSON representation of the current user
     return jsonify(current_user.to_json())
