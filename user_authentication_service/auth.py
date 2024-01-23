@@ -5,7 +5,8 @@ This module provides functionalities for user authentication.
 
 import bcrypt
 from db import DB
-from user import User  # Make sure this import is correct
+from user import User
+from sqlalchemy.orm.exc import NoResultFound
 
 
 def _hash_password(password: str) -> bytes:
@@ -27,9 +28,9 @@ class Auth:
         """
         Registers a new user with an email and password.
         """
-        user = self._db.find_user_by(email=email)
-        if user:
+        try:
+            user = self._db.find_user_by(email=email)
             raise ValueError(f"User {email} already exists")
-
-        hashed_password = _hash_password(password)
-        return self._db.add_user(email, hashed_password)
+        except NoResultFound:
+            hashed_password = _hash_password(password)
+            return self._db.add_user(email, hashed_password)
