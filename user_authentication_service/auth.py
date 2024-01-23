@@ -55,6 +55,27 @@ class Auth:
             hashed_password = _hash_password(password)
             return self._db.add_user(email, hashed_password)
 
+    def create_session(self, email: str) -> str:
+        """
+        Create a session ID for a user with the given email.
+
+        Args:
+            email (str): The email of the user.
+
+        Returns:
+            str: The session ID, or None if the user does not exist.
+        """
+        try:
+            user = self._db.find_user_by(email=email)
+        except NoResultFound:
+            return None
+
+        session_id = _generate_uuid()
+        user.session_id = session_id
+        self._db._session.commit()
+
+        return session_id
+
 
 def _generate_uuid() -> str:
     """
