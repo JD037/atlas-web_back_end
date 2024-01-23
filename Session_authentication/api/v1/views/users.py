@@ -4,8 +4,6 @@
 from api.v1.views import app_views
 from flask import abort, jsonify, request
 from models.user import User
-from api.v1.auth.auth import Auth
-from api.v1.auth.basic_auth import BasicAuth
 
 
 @app_views.route('/users', methods=['GET'], strict_slashes=False)
@@ -27,8 +25,15 @@ def view_one_user(user_id: str = None) -> str:
       - User object JSON represented
       - 404 if the User ID doesn't exist
     """
+    if user_id == 'me' and request.current_user is None:
+        abort(404)
+
+    if user_id == 'me' and request.current_user is not None:
+        return jsonify(request.current_user.to_json())
+
     if user_id is None:
         abort(404)
+
     user = User.get(user_id)
     if user is None:
         abort(404)
@@ -122,19 +127,3 @@ def update_user(user_id: str = None) -> str:
         user.last_name = rj.get('last_name')
     user.save()
     return jsonify(user.to_json()), 200
-
-
-@app_views.route('/users/me', methods=['GET'], strict_slashes=False)
-def get_current_user() -> str:
-    """ GET /api/v1/users/me
-    Return:
-      - User object JSON represented for the currently authenticated user
-      - 404 if the current user is not found (authentication issue)
-    """
-    from app import auth  # Import the auth instance from app.py
-
-    current_user = auth.current_user(request)
-    if current_user is None:
-        abort(404)  # User not found, return 404
-
-    return jsonify(current_user.to_json())
