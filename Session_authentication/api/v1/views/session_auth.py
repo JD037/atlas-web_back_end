@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
-""" Session Authentication views """
+""" Module for Session Authentication views """
+
 from api.v1.views import app_views
 from flask import abort, jsonify, request
 from models.user import User
