@@ -1,13 +1,25 @@
 #!/usr/bin/env python3
-from flask import Flask, jsonify
+from flask import Flask, request, jsonify, abort
+from auth import Auth
 
+AUTH = Auth()
 app = Flask(__name__)
 
 
-@app.route('/', methods=['GET'])
-def welcome():
-    """GET route to return a welcome message"""
-    return jsonify({"message": "Bienvenue"})
+@app.route('/users', methods=['POST'], strict_slashes=False)
+def users():
+    """Handle POST request for user registration"""
+    email = request.form.get('email')
+    password = request.form.get('password')
+
+    if not email or not password:
+        abort(400)  # Bad request if email or password missing
+
+    try:
+        AUTH.register_user(email, password)
+        return jsonify({"email": email, "message": "user created"}), 200
+    except ValueError:  # User already exists
+        return jsonify({"message": "email already registered"}), 400
 
 
 if __name__ == "__main__":
