@@ -15,19 +15,28 @@ app.register_blueprint(app_views)
 CORS(app, resources={r"/api/v1/*": {"origins": "*"}})
 
 
-# Create an instance of the Auth class
-auth = Auth()
+auth = None
+
+if os.getenv('AUTH_TYPE') == 'auth':
+    from api.v1.auth.auth import Auth
+    auth = Auth()
+elif os.getenv('AUTH_TYPE') == 'basic_auth':
+    from api.v1.auth.basic_auth import BasicAuth
+    auth = BasicAuth()
+elif os.getenv('AUTH_TYPE') == 'session_auth':
+    from api.v1.auth.session_auth import SessionAuth
+    auth = SessionAuth()
+
 
 
 @app.before_request
 def before_each_request():
     """ Function to run before each request to check user authentication """
-    if not auth.authorization_header(request) and not auth.session_cookie(request):
-        # If the path requires authentication and none is provided, abort the request
-        if auth.require_auth(request.path, ['/api/v1/status/', '/api/v1/unauthorized/', '/api/v1/forbidden/']):
-            abort(401)
-    else:
-        request.current_user = auth.current_user(request)
+    if not auth.require_auth(request.path, ['/api/v1/status/', '/api/v1/unauthorized/', '/api/v1/forbidden/']):
+        return
+    if not auth.authorization_header(request):
+        abort(401)  # Abort with Unauthorized if no authorization header is present
+    request.current_user = auth.current_user(request)
 
 
 @app.errorhandler(404)

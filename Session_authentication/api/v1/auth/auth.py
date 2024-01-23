@@ -12,17 +12,11 @@ class Auth:
     """
 
     def require_auth(self, path: str, excluded_paths: List[str]) -> bool:
-        """
-        Determines if the path requires authentication.
-        """
         if path is None or excluded_paths is None or len(excluded_paths) == 0:
             return True
+        path = path + '/' if not path.endswith('/') else path
+        return not any(ep == path or ep.startswith(path) for ep in excluded_paths)
 
-        # Ensure that all paths in excluded_paths end with '/'
-        normalized_excluded = [
-            p[:-1] if p.endswith('/') else p
-            for p in excluded_paths
-        ]
 
         # Normalize the input path in the same way
         normalized_path = path[:-1] if path.endswith('/') else path
