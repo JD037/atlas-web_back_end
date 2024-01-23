@@ -10,10 +10,15 @@ from api.v1.app import auth
 
 @app_views.route('/auth_session/login', methods=['POST'], strict_slashes=False)
 def login():
-    """ POST /api/v1/auth_session/login
-        JSON body:
-          - email
-          - password
+    """
+    Handles POST request for user login session.
+
+    - Retrieves email and password from the request form.
+    - Validates the presence of email and password.
+    - Searches for the user by email.
+    - Validates the user's password.
+    - Creates a new session for the user.
+    - Sets a cookie with the session ID in the response.
     """
     email = request.form.get('email')
     if not email:
