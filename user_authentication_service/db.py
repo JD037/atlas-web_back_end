@@ -45,13 +45,15 @@ class DB:
         self._session.commit()
         return user
 
-    def find_user_by(self, **kwargs):
+    def find_user_by(self, **kwargs) -> User:
+        # Function implementation
         """
         Find a user by arbitrary keyword arguments.
         Args:
             **kwargs: Arbitrary keyword arguments.
         Returns:
-            User: The first row found in the users table as filtered by the input arguments.
+            User: The first row found in the users table
+            as filtered by the input arguments.
         Raises:
             NoResultFound: If no results are found.
             InvalidRequestError: If wrong query arguments are passed.
