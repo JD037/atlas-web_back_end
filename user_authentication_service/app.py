@@ -69,6 +69,12 @@ def profile():
 
 @app.route('/reset_password', methods=['POST'], strict_slashes=False)
 def get_reset_password_token():
+    """
+    Handle POST request to generate a reset password token for a user.
+    The user's email is obtained from the form data.
+    Returns a JSON response with the email and reset token,
+    or a 403 error if user not found.
+    """
     email = request.form.get('email')
     if not email:
         abort(400)  # Bad request if email is missing
@@ -82,6 +88,12 @@ def get_reset_password_token():
 
 @app.route('/reset_password', methods=['PUT'], strict_slashes=False)
 def update_password():
+    """
+    Handle PUT request to update a user's password.
+    Requires email, reset token, and new password fields in the form data.
+    Returns a JSON response confirming password update,
+    or a 403 error if reset token is invalid.
+    """
     email = request.form.get('email')
     reset_token = request.form.get('reset_token')
     new_password = request.form.get('new_password')
