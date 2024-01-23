@@ -40,9 +40,8 @@ class Auth:
         except NoResultFound:
             return False
 
-        return bcrypt.checkpw(
-            password.encode('utf-8'),
-            user.hashed_password.encode('utf-8'))
+        # Directly use user.hashed_password without encoding
+        return bcrypt.checkpw(password.encode('utf-8'), user.hashed_password)
 
     def register_user(self, email: str, password: str) -> User:
         """
