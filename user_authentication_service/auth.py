@@ -55,6 +55,7 @@ class Auth:
             hashed_password = _hash_password(password)
             return self._db.add_user(email, hashed_password)
 
+
 def _generate_uuid() -> str:
     """
     Generate a new UUID.
@@ -62,4 +63,4 @@ def _generate_uuid() -> str:
     Returns:
         str: A string representation of the newly generated UUID.
     """
-    return str(uuid.uuid4())    
+    return str(uuid.uuid4())
