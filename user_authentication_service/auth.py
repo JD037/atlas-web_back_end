@@ -3,6 +3,7 @@
 This module provides functionalities for user authentication.
 """
 
+import uuid
 import bcrypt
 from db import DB
 from user import User
@@ -53,3 +54,12 @@ class Auth:
         except NoResultFound:
             hashed_password = _hash_password(password)
             return self._db.add_user(email, hashed_password)
+
+    def _generate_uuid() -> str:
+        """
+        Generate a new UUID.
+
+        Returns:
+            str: A string representation of the newly generated UUID.
+        """
+        return str(uuid.uuid4())
