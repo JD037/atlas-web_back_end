@@ -12,6 +12,16 @@ class Auth:
     """
 
     def require_auth(self, path: str, excluded_paths: List[str]) -> bool:
+        """
+        Determines if the path requires authentication.
+
+        Args:
+            path (str): The path to evaluate for authentication.
+            excluded_paths (List[str]): A list of paths that don't require authentication.
+
+        Returns:
+            bool: True if the path requires authentication, False otherwise.
+        """
         if path is None or excluded_paths is None or len(excluded_paths) == 0:
             return True
         path = path + '/' if not path.endswith('/') else path
