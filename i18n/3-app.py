@@ -25,7 +25,7 @@ def get_locale():
 
 @app.route('/')
 def index():
-    """Renders the HTML page"""
+    """Renders the HTML page when requested"""
     return render_template('2-index.html')
 
 
