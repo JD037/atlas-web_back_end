@@ -2,7 +2,7 @@
 """Get Locale from Request - Sets up a Flask app
 and configures Babel for internationalization."""
 from flask import Flask, render_template, request
-from flask_babel import Babel, _
+from flask_babel import Babel
 
 app = Flask(__name__)
 
@@ -32,6 +32,9 @@ def get_locale():
     Returns:
         str: the best match language from the user's preferences.
     """
+    user_locale = request.args.get('locale')
+    if user_locale in app.config['LANGUAGES']:
+        return user_locale
     return request.accept_languages.best_match(app.config['LANGUAGES'])
 
 
