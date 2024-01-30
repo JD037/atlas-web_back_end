@@ -37,6 +37,7 @@ class TestGetJson(unittest.TestCase):
         ("http://holberton.io", {"payload": False}),
     ])
     def test_get_json(self, test_url, test_payload):
+        """Test get_json function with a mocked requests.get call."""
         with patch('requests.get') as mock_get:
             mock_get.return_value.json.return_value = test_payload
             response = get_json(test_url)
@@ -45,14 +46,21 @@ class TestGetJson(unittest.TestCase):
 
 
 class TestMemoize(unittest.TestCase):
-    """Tests the memoize decorator from utils module."""
+    """Tests the memoize decorator ensuring it caches the correct results."""
+
     def test_memoize(self):
+        """Test the memoize decorator to confirm it
+        caches the output of methods."""
         class TestClass:
+            """Class for testing the memoize decorator."""
             def a_method(self):
+                """A dummy method that returns 42."""
                 return 42
 
             @memoize
             def a_property(self):
+                """A property method to test memoization
+                	of a_method's return value."""
                 return self.a_method()
 
         with patch.object(
