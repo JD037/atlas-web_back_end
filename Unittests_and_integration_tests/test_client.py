@@ -2,10 +2,20 @@
 """Unit tests for the client module."""
 
 import unittest
-from unittest.mock import patch, PropertyMock
+from unittest.mock import patch, PropertyMock, Mock
 from parameterized import parameterized, parameterized_class
 from client import GithubOrgClient
-from fixtures import org_payload, repos_payload, expected_repos, apache2_repos
+from requests.exceptions import HTTPError
+from fixtures import TEST_PAYLOAD
+
+# Define your fixtures directly in this file as a workaround
+org_payload = {"repos_url": "test_repos_url"}
+repos_payload = [
+    {"name": "repo1", "license": {"key": "my_license"}},
+    {"name": "repo2", "license": {"key": "other_license"}}
+]
+expected_repos = ["repo1", "repo2"]
+apache2_repos = ["repo1"]  # Modify as needed
 
 
 class TestGithubOrgClient(unittest.TestCase):
@@ -18,8 +28,9 @@ class TestGithubOrgClient(unittest.TestCase):
     @patch('client.get_json')
     def test_org(self, org_name, mock_get_json):
         """Test GithubOrgClient.org."""
+        mock_get_json.return_value = {"payload": True}
         test_instance = GithubOrgClient(org_name)
-        test_instance.org()
+        self.assertEqual(test_instance.org, {"payload": True})
         expected_url = f"https://api.github.com/orgs/{org_name}"
         mock_get_json.assert_called_once_with(expected_url)
 
@@ -43,7 +54,8 @@ class TestGithubOrgClient(unittest.TestCase):
         mock_get_json.return_value = repos_payload
         test_instance = GithubOrgClient("test_org")
         result = test_instance.public_repos()
-        self.assertEqual(result, expected_repos)
+        expected_names = [repo['name'] for repo in repos_payload]
+        self.assertEqual(result, expected_names)
         mock_get_json.assert_called_once_with("test_url")
         mock_public_repos_url.assert_called_once()
 
@@ -64,12 +76,13 @@ class TestGithubOrgClient(unittest.TestCase):
 class TestIntegrationGithubOrgClient(unittest.TestCase):
     """Integration tests for the GithubOrgClient.public_repos method."""
     @classmethod
-    @patch('requests.get')
-    def setUpClass(cls, mock_get):
+    def setUpClass(cls):
         """Set up resources before any test cases are run."""
-        cls.get_patcher = mock_get
-        cls.get_patcher.side_effect = [
-            org_payload, repos_payload, expected_repos, apache2_repos
+        cls.get_patcher = patch('requests.get')
+        cls.mock_get = cls.get_patcher.start()
+        cls.mock_get.side_effect = [
+            Mock(status_code=200, json=lambda: org_payload),
+            Mock(status_code=200, json=lambda: repos_payload),
         ]
 
     @classmethod
