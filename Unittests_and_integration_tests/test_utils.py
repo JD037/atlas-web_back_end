@@ -8,6 +8,7 @@ from utils import access_nested_map, get_json, memoize
 
 
 class TestAccessNestedMap(unittest.TestCase):
+    """Tests the access_nested_map function from utils module."""
     @parameterized.expand([
         ({"a": 1}, ("a",), 1),
         ({"a": {"b": 2}}, ("a",), {"b": 2}),
@@ -17,7 +18,7 @@ class TestAccessNestedMap(unittest.TestCase):
         """Test that the method returns what it is supposed to."""
         result = access_nested_map(nested_map, path)
         self.assertEqual(result, expected)
-        
+
     @parameterized.expand([
         ({}, ("a",)),
         ({"a": 1}, ("a", "b")),
@@ -30,6 +31,7 @@ class TestAccessNestedMap(unittest.TestCase):
 
 
 class TestGetJson(unittest.TestCase):
+    """Tests the get_json function from utils module."""
     @parameterized.expand([
         ("http://example.com", {"payload": True}),
         ("http://holberton.io", {"payload": False}),
@@ -43,6 +45,7 @@ class TestGetJson(unittest.TestCase):
 
 
 class TestMemoize(unittest.TestCase):
+    """Tests the memoize decorator from utils module."""
     def test_memoize(self):
         class TestClass:
             def a_method(self):
@@ -51,11 +54,13 @@ class TestMemoize(unittest.TestCase):
             @memoize
             def a_property(self):
                 return self.a_method()
-        
-        with patch.object(TestClass, 'a_method', return_value=42) as mock_method:
+
+        with patch.object(
+                TestClass, 'a_method', return_value=42
+        ) as mock_method:
             test_class_instance = TestClass()
-            self.assertEqual(test_class_instance.a_property, 42)  # First call to a_property
-            self.assertEqual(test_class_instance.a_property, 42)  # Second call to a_property
+            self.assertEqual(test_class_instance.a_property, 42)
+            self.assertEqual(test_class_instance.a_property, 42)
             mock_method.assert_called_once()
 
 
