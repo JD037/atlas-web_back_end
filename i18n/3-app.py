@@ -2,7 +2,7 @@
 """Get Locale from Request - Sets up a Flask app
 and configures Babel for internationalization."""
 from flask import Flask, render_template, request
-from flask_babel import Babel, _
+from flask_babel import Babel
 
 app = Flask(__name__)
 
@@ -32,7 +32,13 @@ def get_locale():
     Returns:
         str: the best match language from the user's preferences.
     """
-    return request.accept_languages.best_match(app.config['LANGUAGES'])
+    user_locale = request.args.get('locale')
+    print(f"Requested locale: {user_locale}")  # Debug print
+    if user_locale in app.config['LANGUAGES']:
+        return user_locale
+    best_match = request.accept_languages.best_match(app.config['LANGUAGES'])
+    print(f"Best match: {best_match}")  # Debug print
+    return best_match
 
 
 @app.route('/')
@@ -42,7 +48,7 @@ def index():
     Returns:
         str: HTML content of the main page.
     """
-    return render_template('3-index.html')
+    return render_template('4-index.html')
 
 
 if __name__ == "__main__":
