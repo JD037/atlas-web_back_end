@@ -1,0 +1,25 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual Environment
+venv/
+.env
+
+# OS generated files
+.DS_Store
+
+# Babel translation files
+*.pot
+*.pyc
+
+# If you are using SQLite, uncomment the next line
+# *.db
+
+# Flask stuff
+instance/
+.webassets-cache
+
+# PyCharm project files (uncomment if you use PyCharm)
+# .idea/
