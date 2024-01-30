@@ -60,7 +60,7 @@ class TestMemoize(unittest.TestCase):
             @memoize
             def a_property(self):
                 """A property method to test memoization
-                	of a_method's return value."""
+                    of a_method's return value."""
                 return self.a_method()
 
         with patch.object(
