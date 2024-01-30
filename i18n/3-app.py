@@ -3,6 +3,7 @@
 and configures Babel for internationalization."""
 from flask import Flask, render_template, request
 from flask_babel import Babel
+from flask_babel import get_locale 
 
 app = Flask(__name__)
 
@@ -23,6 +24,10 @@ class Config:
 
 app.config.from_object(Config)
 babel = Babel(app)
+
+@app.context_processor
+def inject_locale():
+    return dict(current_locale=str(get_locale()))
 
 
 @babel.localeselector
