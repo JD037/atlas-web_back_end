@@ -44,6 +44,7 @@ def get_user():
 
 @app.context_processor
 def inject_locale():
+    """ Return user preferred locale, if not available return best match """
     return dict(get_locale=get_locale)
 
 
