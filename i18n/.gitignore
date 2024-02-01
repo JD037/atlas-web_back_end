@@ -12,7 +12,6 @@ myenv
 .DS_Store
 
 # Babel translation files
-*.pot
 *.pyc
 
 # If you are using SQLite, uncomment the next line
