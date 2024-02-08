@@ -42,13 +42,16 @@ def replay(method: Callable):
     Function that displays the history of calls of a particular function.
     """
     cache = Cache()
-    input_key = f"{method.__qualname__}:inputs"
-    output_key = f"{method.__qualname__}:outputs"
-    inputs = cache._redis.lrange(input_key, 0, -1)
-    outputs = cache._redis.lrange(output_key, 0, -1)
-    print(f"{method.__qualname__} was called {len(inputs)} times:")
+    method_name = method.__qualname__
+    inputs = cache._redis.lrange(f"{method_name}:inputs", 0, -1)
+    outputs = cache._redis.lrange(f"{method_name}:outputs", 0, -1)
+    print(f"{method_name} was called {len(inputs)} times:")
     for inp, out in zip(inputs, outputs):
-        print(f"{method.__qualname__}{inp.decode('utf-8')} -> {out.decode('utf-8')}")
+        # Convert input from string representation of tuple back to actual tuple
+        inp_tuple = eval(inp.decode('utf-8'))
+        # Ensure that output is a string representation of UUID
+        out_str = out.decode('utf-8')
+        print(f"{method_name}(*{inp_tuple}) -> {out_str}")
 
 
 class Cache:
