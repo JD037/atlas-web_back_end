@@ -1,5 +1,5 @@
--- Assumes metal_bands table is already imported
-SELECT origin, COUNT(*) AS nb_fans
+-- Ranks country origins of bands by the total number of fans
+SELECT origin, SUM(nb_fans) AS nb_fans
 FROM bands
 GROUP BY origin
 ORDER BY nb_fans DESC;
