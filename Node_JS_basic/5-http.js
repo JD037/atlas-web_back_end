@@ -34,23 +34,23 @@ async function countStudents(path) {
 }
 
 const app = http.createServer(async (req, res) => {
-  res.writeHead(200, { 'Content-Type': 'text/plain' });
-  if (req.url === '/') {
-    res.end('Hello Holberton School!');
-  } else if (req.url === '/students') {
-    try {
-      const students = await countStudents(process.argv[2]);
-      res.end(`This is the list of our students\n${students}`);
-    } catch (error) {
-      res.end(error.message);
-    }
-  } else {
-    res.end('Hello Holberton School!');
-  }
-});
-
-app.listen(1245, () => {
-  console.log('Server is running on port 1245');
-});
-
-module.exports = app;
+	if (req.url === '/') {
+	  res.writeHead(200, { 'Content-Type': 'text/plain' });
+	  res.end('Hello Holberton School!');
+	} else if (req.url === '/students') {
+	  try {
+		const data = await countStudents(process.argv[2]); // Assuming the CSV path is provided as a command-line argument
+		res.writeHead(200, { 'Content-Type': 'text/plain' });
+		res.end(`This is the list of our students\n${data}`);
+	  } catch (error) {
+		res.writeHead(404, { 'Content-Type': 'text/plain' });
+		res.end('Cannot load the database');
+	  }
+	}
+  });
+  
+  app.listen(1245, () => {
+	console.log('Server listening on port 1245');
+  });
+  
+  module.exports = app;
