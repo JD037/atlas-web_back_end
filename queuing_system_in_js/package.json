@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon --watch 0-redis_client.js --exec babel-node --presets @babel/preset-env 0-redis_client.js"
   },
   "keywords": [],
   "author": "",
