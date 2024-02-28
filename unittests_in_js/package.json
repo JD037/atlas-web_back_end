@@ -6,7 +6,7 @@
   "scripts": {
     "lint": "./node_modules/.bin/eslint",
     "check-lint": "lint [0-9]*.js",
-    "test": "mocha \"./**/*.test.js\"",
+    "test": "mocha test.js",
     "dev": "nodemon --exec babel-node --presets @babel/preset-env"
   },
   "author": "",
@@ -24,6 +24,7 @@
     "@babel/node": "^7.8.0",
     "@babel/preset-env": "^7.8.2",
     "@babel/register": "^7.8.0",
+    "@sinonjs/referee-sinon": "^12.0.0",
     "chai": "^4.4.1",
     "eslint": "^6.4.0",
     "eslint-config-airbnb-base": "^14.0.0",
