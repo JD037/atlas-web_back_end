@@ -1,3 +1,4 @@
-const displayMessage = require('./0-console');
+// 0-main.js
+import displayMessage from './0-console.js';
 
 displayMessage("Hello NodeJS!");
