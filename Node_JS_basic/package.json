@@ -7,7 +7,7 @@
 		"lint": "eslint . --fix",
 		"check-lint": "lint [0-9]*.js",
 		"test": "./node_modules/.bin/mocha --require @babel/register --exit",
-		"dev": "nodemon --exec babel-node 0-main.js"
+		"dev": "nodemon --exec babel-node full_server/server.js"
 	},
 	"author": "",
 	"license": "ISC",
